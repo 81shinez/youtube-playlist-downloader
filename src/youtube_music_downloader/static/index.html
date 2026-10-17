@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Music Downloader</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="top-bar">
+      <div>
+        <p class="eyebrow">로컬 YouTube Music 다운로더</p>
+        <h1>YouTube Music MP3 대시보드</h1>
+      </div>
+      <p class="status-pill" id="job-status">작업 대기</p>
+    </header>
+
+    <div class="workspace-grid">
+      <section class="panel setup-panel" aria-labelledby="setup-title">
+        <div class="panel-heading">
+          <h2 id="setup-title">다운로드 설정</h2>
+        </div>
+
+        <form class="job-form" id="job-form">
+          <label class="field" for="playlist-url">
+            <span>플레이리스트 URL</span>
+            <input
+              id="playlist-url"
+              name="playlist_url"
+              type="url"
+              placeholder="https://music.youtube.com/playlist?list=..."
+              autocomplete="off"
+              required
+            >
+          </label>
+
+          <label class="field" for="output-dir">
+            <span>저장 폴더</span>
+            <input
+              id="output-dir"
+              name="output_dir"
+              type="text"
+              placeholder="C:\Music\YouTube"
+              autocomplete="off"
+              required
+            >
+          </label>
+
+          <fieldset class="field-group">
+            <legend>출력 모드</legend>
+            <div class="segmented" role="radiogroup" aria-describedby="mode-help">
+              <label class="segment">
+                <input type="radio" name="output_mode" value="192" checked>
+                <span>192kbps MP3</span>
+              </label>
+              <label class="segment">
+                <input type="radio" name="output_mode" value="max">
+                <span>최대</span>
+              </label>
+            </div>
+            <p class="help-text" id="mode-help">
+              192kbps: 고정 MP3로 저장합니다. 최대: 원본 오디오 비트레이트 추정값을 사용하되 320kbps로 제한합니다. 원본을 알 수 없으면 백엔드가 보수적으로 처리합니다.
+            </p>
+          </fieldset>
+
+          <label class="field" for="cookie-source">
+            <span>브라우저 쿠키</span>
+            <select id="cookie-source" name="cookie_source">
+              <option value="auto" selected>자동</option>
+              <option value="">사용 안 함</option>
+              <option value="chrome">Chrome</option>
+              <option value="edge">Edge</option>
+              <option value="firefox">Firefox</option>
+              <option value="brave">Brave</option>
+            </select>
+          </label>
+
+          <div class="form-row">
+            <label class="field compact-field" for="concurrency">
+              <span>동시 처리</span>
+              <input id="concurrency" name="concurrency" type="number" min="1" max="4" value="2" required>
+            </label>
+            <button class="primary-button" id="start-button" type="submit">다운로드 시작</button>
+          </div>
+
+          <p class="authorized-note">권한이 있는 콘텐츠 또는 개인 보관이 허용된 콘텐츠에만 사용하세요.</p>
+        </form>
+
+        <p class="message" id="form-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel summary-panel" aria-labelledby="summary-title">
+        <div class="panel-heading">
+          <h2 id="summary-title">작업 요약</h2>
+          <p id="last-updated">아직 작업이 없습니다</p>
+        </div>
+
+        <dl class="summary-grid">
+          <div class="metric">
+            <dt>전체</dt>
+            <dd id="summary-total">0</dd>
+          </div>
+          <div class="metric">
+            <dt>완료</dt>
+            <dd id="summary-completed">0</dd>
+          </div>
+          <div class="metric">
+            <dt>실패</dt>
+            <dd id="summary-failed">0</dd>
+          </div>
+          <div class="metric">
+            <dt>취소</dt>
+            <dd id="summary-canceled">0</dd>
+          </div>
+        </dl>
+
+        <div class="toolbar">
+          <button class="secondary-button" id="pause-job" type="button" disabled>일시 정지</button>
+          <button class="secondary-button" id="resume-job" type="button" disabled>다시 시작</button>
+          <button class="secondary-button danger" id="cancel-job" type="button" disabled>작업 취소</button>
+          <button class="secondary-button" id="retry-failed" type="button" disabled>실패 전체 재시도</button>
+          <button class="secondary-button" id="open-output-folder" type="button" disabled>출력 폴더 열기</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel tracks-panel" aria-labelledby="tracks-title">
+      <div class="panel-heading tracks-heading">
+        <h2 id="tracks-title">트랙 진행 상황</h2>
+        <p id="tracks-count">0개 트랙</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">트랙</th>
+              <th scope="col">상태</th>
+              <th scope="col">진행률</th>
+              <th scope="col">출력 비트레이트</th>
+              <th scope="col">오류</th>
+              <th scope="col">작업</th>
+            </tr>
+          </thead>
+          <tbody id="tracks-body">
+            <tr class="empty-row">
+              <td colspan="6">작업을 시작하면 트랙별 진행률이 여기에 표시됩니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

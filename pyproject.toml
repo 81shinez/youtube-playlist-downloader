@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "youtube-music-downloader"
+version = "0.1.0"
+description = "Native desktop utility for saving authorized YouTube Music playlists as MP3 files."
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "licenses/*.txt", "licenses/SOURCES.md"]
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "pydantic>=2,<3",
+  "yt-dlp>=2025.1.1",
+  "PySide6-Essentials>=6.8,<7",
+  "imageio-ffmpeg>=0.6,<1",
+]
+
+[project.gui-scripts]
+ytm-downloader = "youtube_music_downloader.main:main"
+
+[project.optional-dependencies]
+build = [
+  "pyinstaller>=6",
+]
+dev = [
+  "pytest>=8,<9",
+  "pytest-asyncio>=0.23,<1",
+  "httpx>=0.27,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+youtube_music_downloader = ["static/*.html", "static/*.css", "static/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
