@@ -1,62 +1,41 @@
 # YouTube Music Downloader
 
 YouTube / YouTube Music 재생목록을 MP3로 저장하는 로컬 데스크톱 앱입니다.
-기본 실행 화면은 PySide6 네이티브 창이며, 브라우저나 로컬 웹 서버가 필요하지 않습니다.
+Windows에서는 `YTMusicDownloader.exe` 파일 하나를 더블클릭하여 실행합니다.
+Python, 가상환경, FFmpeg를 따로 설치할 필요가 없으며, 브라우저나 로컬 웹 서버도 필요하지 않습니다.
 다운로드하거나 보관할 권한이 있는 콘텐츠에만 사용하세요.
 
 프로젝트 자체 소스는 [MIT 라이선스](LICENSE)입니다. YouTube/Google과 제휴한 공식 앱이 아닙니다.
 소스 라이선스는 콘텐츠 다운로드 권한을 부여하지 않으며, 저작권과
 [YouTube 이용약관](https://www.youtube.com/static?template=terms)을 별도로 준수해야 합니다.
-현재 **소스 공개 준비와 로컬 테스트용 빌드만 지원**합니다. FFmpeg·Qt의 대응 소스 검증이
-완료되지 않아 EXE 등 바이너리의 공개 배포는 차단했습니다. [배포 체크리스트](docs/DISTRIBUTION.md)를 확인하세요.
 
-## 설치
+## 앱 실행
 
-소스 실행과 빌드에는 Python 3.12 이상이 필요합니다. 배포용으로 빌드한 Windows 단일 EXE,
-macOS `.app`, Linux 폴더에는 Python과 필요한 라이브러리가 포함됩니다.
-Windows 기본 빌드는 `YTMusicDownloader.exe` 하나만 복사하여 실행할 수 있습니다.
-이는 실행 파일 구성에 대한 설명이며, 별도의 라이선스 재배포 의무를 면제하지 않습니다.
+### Windows
 
-### Windows (PowerShell)
+1. 빌드된 `YTMusicDownloader.exe`를 원하는 폴더에 둡니다.
+2. `YTMusicDownloader.exe`를 더블클릭합니다.
+3. 사용을 마치면 앱 창을 닫습니다.
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python -m pip install --upgrade pip
-.\.venv\Scripts\python -m pip install -e .
-.\.venv\Scripts\ytm-downloader.exe
-```
+별도의 설치 명령, 터미널, `.venv` 폴더, 워커 파일이나 FFmpeg 파일은 필요하지 않습니다.
+실행에 필요한 구성 요소는 EXE에 포함되며, 실행 시 임시 폴더에 자동으로 풀립니다.
+따라서 첫 실행에는 잠시 시간이 걸릴 수 있습니다.
 
-### macOS / Linux
+macOS 빌드는 `YTMusicDownloader.app` 아이콘을 열어 실행합니다.
+`.app`은 내부 구성 요소를 포함한 앱 번들이므로 전체를 유지해야 합니다.
+Linux의 현재 빌드는 단일 파일이 아닌 폴더형이며, 전체 폴더가 필요합니다.
 
-```bash
-python3.12 -m venv .venv
-.venv/bin/python -m pip install --upgrade pip
-.venv/bin/python -m pip install -e .
-.venv/bin/ytm-downloader
-```
+### 실행 파일 제공 현황
 
-Linux에서는 그래픽 데스크톱 세션과 Qt 플랫폼 플러그인이 사용하는 시스템 라이브러리가
-필요합니다. Ubuntu 22.04 기준으로 다음 패키지를 설치할 수 있습니다.
+**현재 GitHub에는 소스 코드만 공개되어 있으며, Releases에 실행 파일을 제공하지 않습니다.**
+Windows 단일 EXE는 로컬에서 빌드하고 단독 실행을 검증했지만, 공개 배포 전 포함 라이브러리의
+재배포 검토가 남아 있습니다. 자세한 상태는 [배포 안내](docs/DISTRIBUTION.md)에 있습니다.
+GitHub의 `Download ZIP`은 실행 파일이 아니라 소스 코드입니다.
 
-```bash
-sudo apt-get install libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0
-```
+아래 개발자용 명령은 소스를 직접 실행하거나 빌드할 때만 필요하며,
+이미 빌드된 EXE를 사용하는 사람의 설치 절차가 아닙니다.
 
-GUI에는 `PySide6-Essentials`의 QtCore, QtGui, QtWidgets를 사용합니다.
-QtWebEngine이나 전체 `PySide6` 패키지는 필요하지 않습니다. 미디어 다운로드는
-`yt-dlp`, MP3 변환은 FFmpeg가 담당합니다. 소스 실행은 `imageio-ffmpeg` 또는 `PATH`의
-FFmpeg를 사용합니다. 패키징은 소스와 해시가 고정된 오디오 전용 FFmpeg 8.1.2를 별도로
-포함하며, 개발용 `imageio-ffmpeg` 바이너리는 포함하지 않습니다.
-
-## 실행과 사용
-
-가상환경의 `ytm-downloader`를 실행하거나, 다음처럼 Python 모듈로 실행할 수 있습니다.
-
-```powershell
-.\.venv\Scripts\python -m youtube_music_downloader.main
-```
-
-macOS / Linux에서는 위 명령의 Python 경로를 `.venv/bin/python`으로 바꾸세요.
+## 사용 방법
 
 1. 재생목록 URL과 저장 폴더를 지정합니다.
 2. 출력 모드, 동시 작업 수(1~4), 브라우저 쿠키 설정을 선택합니다.
@@ -85,7 +64,51 @@ Chrome, Edge, Firefox, Brave 쿠키를 재생목록 분석, 원본 비트레이�
 MP3 변환은 호환성을 위한 재인코딩입니다. 원본보다 높은 비트레이트로 저장해도 원본에 없던
 음질이 복원되지는 않습니다.
 
-## 선택 사항: 기존 웹 모드
+## 개발자용: 소스 실행
+
+이 절차는 소스를 수정하거나 직접 빌드하는 개발자를 위한 것입니다.
+빌드된 앱을 실행하는 사용자에게는 Python이나 가상환경이 필요하지 않습니다.
+소스 실행과 빌드에는 Python 3.12 이상이 필요합니다.
+
+### Windows (PowerShell)
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python -m pip install --upgrade pip
+.\.venv\Scripts\python -m pip install -e .
+.\.venv\Scripts\ytm-downloader.exe
+```
+
+가상환경의 런처 대신 다음 명령으로 소스를 실행할 수도 있습니다.
+이 명령은 단일 EXE 실행 방법이 아닙니다.
+
+```powershell
+.\.venv\Scripts\python -m youtube_music_downloader.main
+```
+
+### macOS / Linux
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -e .
+.venv/bin/ytm-downloader
+```
+
+Linux에서는 그래픽 데스크톱 세션과 Qt 플랫폼 플러그인이 사용하는 시스템 라이브러리가
+필요합니다. Ubuntu 22.04 기준으로 다음 패키지를 설치할 수 있습니다.
+
+```bash
+sudo apt-get install libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0
+```
+
+GUI에는 `PySide6-Essentials`의 QtCore, QtGui, QtWidgets를 사용합니다.
+QtWebEngine이나 전체 `PySide6` 패키지는 필요하지 않습니다. 미디어 다운로드는
+`yt-dlp`, MP3 변환은 FFmpeg가 담당합니다. 소스 실행은 `imageio-ffmpeg` 또는 `PATH`의
+FFmpeg를 사용합니다. 패키징은 소스와 해시가 고정된 오디오 전용 FFmpeg 8.1.2를 별도로
+포함하며, 개발용 `imageio-ffmpeg` 바이너리는 포함하지 않습니다.
+
+## 개발자용: 기존 웹 모드
 
 웹 UI와 HTTP API는 `--web`을 지정할 때만 실행합니다.
 
@@ -113,7 +136,7 @@ API는 실행마다 바뀌는 토큰과 Host/Origin을 검사합니다. 웹 UI�
 - `POST /api/jobs/{job_id}/tracks/{track_id}/cancel`: 곡 하나 취소.
 - `POST /api/jobs/{job_id}/open-output-folder`: 로컬 클라이언트에서 작업의 저장 폴더 열기.
 
-## 데스크톱 배포본 빌드
+## 개발자용: 데스크톱 빌드
 
 대상 운영체제에서 가상환경을 활성화한 뒤 실행합니다.
 
@@ -127,7 +150,7 @@ python scripts/build_desktop.py
 설치하지 않습니다. 현재 호스트 운영체제와 Python 아키텍처용으로만 빌드하며, Windows에서
 macOS 앱을 만드는 등의 교차 컴파일은 지원하지 않습니다.
 빌드는 5분을 초과하면 하위 프로세스를 종료합니다. 공개 배포 검사를 포함하는 `--release`는
-현재 대응 소스 준비 미완료로 실패합니다. 일반 빌드는 로컬 검증용으로만 사용하세요.
+현재 포함 라이브러리의 재배포 검토가 완료되지 않아 실패합니다. 일반 빌드는 로컬 검증용으로만 사용하세요.
 
 Windows에서는 기본적으로 onefile 모드로 `dist/YTMusicDownloader.exe`를 만듭니다.
 기존 Windows 폴더형 배포본이 필요하면 `python scripts/build_desktop.py --onedir`를 사용하세요.
@@ -232,7 +255,7 @@ macOS / Linux는 기존 콘솔 워커 시작 확인을 유지합니다. 이 검�
 - YouTube 변경, 지역/계정 제한, 쿠키 접근 실패로 다운로드가 실패할 수 있습니다.
   별도 JavaScript 런타임이나 추가 인증이 필요한 콘텐츠까지 자동으로 해결하지는 않습니다.
 
-## 개발 및 테스트
+## 개발자용: 테스트
 
 ```powershell
 .\.venv\Scripts\python -m pip install -e ".[dev]"
