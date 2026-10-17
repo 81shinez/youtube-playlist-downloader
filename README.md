@@ -36,6 +36,57 @@ Windows 단일 EXE는 로컬 검증본이 있지만, 포함 라이브러리의 �
 GitHub Releases에는 올리지 않았습니다. 자세한 상태는 [배포 문서](docs/DISTRIBUTION.md)에 있습니다.
 GitHub의 `Code > Download ZIP`은 앱이 아닌 소스 코드이며, 위 실행 파일을 포함하지 않습니다.
 
+## 직접 빌드하기
+
+공개 실행 파일이 아직 없으므로, 필요하면 아래 절차로 로컬용 앱을 만들 수 있습니다.
+**Python은 빌드할 때만 필요합니다. 완성된 앱은 위의 실행 방법대로 독립 실행합니다.**
+
+Python 3.12와 인터넷 연결을 준비하고, `Code > Download ZIP`으로 소스를 받아 압축을 풉니다.
+터미널에서 `pyproject.toml`이 있는 폴더로 이동한 뒤 해당 OS의 명령을 실행하세요.
+Windows용은 Windows에서, macOS용은 macOS에서, Linux용은 Linux에서 빌드합니다.
+
+<details>
+<summary>Windows (PowerShell)</summary>
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python -m pip install -e ".[build]"
+.\.venv\Scripts\python scripts/prepare_ffmpeg.py --download
+.\.venv\Scripts\python scripts/build_desktop.py
+```
+
+결과: `dist/YTMusicDownloader.exe`. 이 파일 하나를 더블클릭하면 됩니다.
+
+</details>
+
+<details>
+<summary>macOS / Linux (터미널)</summary>
+
+Linux는 그래픽 세션과 Qt 시스템 라이브러리가 필요합니다.
+Ubuntu 22.04에서는 먼저 다음 패키지를 설치하세요. macOS에는 이 단계가 필요하지 않습니다.
+
+```bash
+sudo apt-get update
+sudo apt-get install libegl1 libopengl0 libxcb-cursor0 libxkbcommon-x11-0
+```
+
+앱 빌드:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -e ".[build]"
+.venv/bin/python scripts/prepare_ffmpeg.py --download
+.venv/bin/python scripts/build_desktop.py
+```
+
+macOS 결과: `dist/YTMusicDownloader.app`을 엽니다.
+Linux 결과: `dist/YTMusicDownloader/` 폴더 전체를 유지하고 내부 실행 파일을 엽니다.
+
+</details>
+
+추가 옵션과 패키징 내부 설명은 [개발자용 빌드 문서](docs/development/BUILDING.md)에 있습니다.
+이 절차는 로컬용 빌드이며, 실행 파일의 공개 재배포 검토가 완료되었다는 뜻은 아닙니다.
+
 ## 앱 사용하기
 
 1. YouTube 또는 YouTube Music 재생목록 URL을 붙여 넣습니다.
