@@ -2,9 +2,19 @@
 
 [개발자 문서 목록](README.md)
 
-Python 3.12 이상이 필요합니다. 아래 명령은 Python 3.12와 저장소 루트
-(`pyproject.toml`이 있는 폴더)를 기준으로 합니다.
-소스를 받는 방법은 [프로젝트 README](../../README.md)에 있습니다.
+앱 소스를 수정하고 테스트·패키징하는 개발자를 위한 환경 설정입니다.
+일반 사용자는 이 과정을 거치지 않고 패키징된 앱을 실행합니다.
+Python 3.12 이상이 필요하며, 아래 예시는 Python 3.12 기준입니다.
+
+## 소스 받기
+
+```bash
+git clone https://github.com/81shinez/youtube-playlist-downloader.git
+cd youtube-playlist-downloader
+```
+
+Git 없이 받으려면 저장소의 `Code > Download ZIP`을 선택하고 압축을 풉니다.
+이후 명령은 `pyproject.toml`이 있는 프로젝트 폴더에서 실행합니다.
 
 ## Windows
 
@@ -14,12 +24,10 @@ PowerShell에서 실행합니다. 가상환경 활성화 없이도 아래 경로
 py -3.12 -m venv .venv
 .\.venv\Scripts\python -m pip install --upgrade pip
 .\.venv\Scripts\python -m pip install -e ".[dev]"
-.\.venv\Scripts\python -m youtube_music_downloader.main
 ```
 
-가상환경에 설치된 GUI 런처 `.\.venv\Scripts\ytm-downloader.exe`로도 실행할 수 있습니다.
-이 런처는 가상환경에 의존하며, 빌드된 독립 실행 파일 `dist/YTMusicDownloader.exe`와 다릅니다.
-소스 실행 로그를 확인하려면 위 Python 모듈 명령을 사용하세요.
+앱을 확인할 때는 [빌드 절차](BUILDING.md)로 만든 `dist/YTMusicDownloader.exe`를 실행하고
+[독립 실행 검증](TESTING.md)을 수행합니다.
 
 ## macOS / Linux
 
@@ -27,11 +35,10 @@ py -3.12 -m venv .venv
 python3.12 -m venv .venv
 .venv/bin/python -m pip install --upgrade pip
 .venv/bin/python -m pip install -e ".[dev]"
-.venv/bin/python -m youtube_music_downloader.main
 ```
 
-`.venv/bin/ytm-downloader` 런처도 사용할 수 있습니다.
-Linux에서 GUI를 열려면 그래픽 데스크톱 세션과 Qt 시스템 라이브러리가 필요합니다.
+앱 실행은 [빌드 절차](BUILDING.md)에서 만든 플랫폼별 패키지를 기준으로 확인합니다.
+Linux의 GUI에는 그래픽 데스크톱 세션과 Qt 시스템 라이브러리가 필요합니다.
 Ubuntu 22.04 기준 패키지는 다음과 같습니다.
 
 ```bash

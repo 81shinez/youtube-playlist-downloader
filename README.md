@@ -7,71 +7,42 @@ YouTube / YouTube Music 재생목록을 MP3로 저장하는 데스크톱 앱입�
 앱 실행에는 Python, 가상환경, 별도 FFmpeg나 웹 서버가 필요하지 않습니다.
 macOS는 `.app` 번들, Linux는 실행 파일과 라이브러리가 포함된 폴더를 사용합니다.
 
-## 시작하기
+## 앱 실행
 
-현재 이 저장소는 **소스 코드만 제공**하며, GitHub Releases에 실행 파일은 없습니다.
-아래 절차로 소스를 받아 로컬에서 실행 파일을 만들 수 있습니다.
-Python은 이 빌드 과정에만 필요하며, 만들어진 앱을 실행할 때는 필요하지 않습니다.
+### Windows
 
-포함 라이브러리의 재배포 검토가 끝나지 않아 공개 바이너리 배포는 아직 지원하지 않습니다.
-자세한 검토 상태는 [배포 문서](docs/DISTRIBUTION.md)를 참고하세요.
-GitHub의 `Code > Download ZIP`도 실행 파일이 아니라 소스 코드입니다.
+1. `YTMusicDownloader.exe`를 원하는 폴더에 둡니다.
+2. 파일을 더블클릭하여 앱을 엽니다.
+3. 사용을 마치면 앱 창을 닫습니다.
 
-### 1. 소스 받기
+**필요한 파일은 EXE 하나뿐입니다.** 설치 명령이나 터미널을 사용할 필요가 없습니다.
+실행에 필요한 구성 요소가 EXE에 포함되어 있으며, 실행 시 임시 폴더에 자동으로 풀립니다.
+처음 열 때는 잠시 시간이 걸릴 수 있습니다.
 
-Git을 사용하는 경우 다음 명령을 실행합니다.
+### macOS
 
-```bash
-git clone https://github.com/81shinez/youtube-playlist-downloader.git
-cd youtube-playlist-downloader
-```
+`YTMusicDownloader.app`을 열어 실행하고 앱을 종료하여 닫습니다.
+`.app`은 하나의 앱으로 취급되는 번들이므로 내부 파일을 꺼내지 말고 전체를 유지하세요.
 
-Git 없이 받으려면 저장소의 `Code > Download ZIP`을 선택하고 압축을 푸세요.
-이후 명령은 `pyproject.toml`이 있는 프로젝트 폴더에서 실행합니다.
+### Linux
 
-### 2. 실행 파일 만들기
+현재 Linux 패키지는 단일 파일이 아닌 폴더형입니다.
+`YTMusicDownloader` 폴더 안의 실행 파일을 열며, 포함된 라이브러리와 폴더 구조를 유지해야 합니다.
 
-Python 3.12 이상과 인터넷 연결이 필요합니다. 아래 예시는 Python 3.12 기준입니다.
-Windows 앱은 Windows에서, macOS 앱은 macOS에서 빌드해야 합니다.
+## 실행 파일 제공 상태
 
-**Windows (PowerShell)**
+**현재 GitHub에는 다운로드할 수 있는 공개 실행 파일이 없습니다.**
+Windows 단일 EXE는 로컬 검증본이 있지만, 포함 라이브러리의 재배포 검토가 남아 있어
+GitHub Releases에는 올리지 않았습니다. 자세한 상태는 [배포 문서](docs/DISTRIBUTION.md)에 있습니다.
+GitHub의 `Code > Download ZIP`은 앱이 아닌 소스 코드이며, 위 실행 파일을 포함하지 않습니다.
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python -m pip install --upgrade pip
-.\.venv\Scripts\python -m pip install -e ".[build]"
-.\.venv\Scripts\python scripts/prepare_ffmpeg.py --download
-.\.venv\Scripts\python scripts/build_desktop.py
-```
-
-빌드가 끝나면 `dist\YTMusicDownloader.exe`를 더블클릭하세요.
-다른 폴더로 옮길 때도 **이 EXE 하나만** 있으면 됩니다.
-
-**macOS / Linux**
-
-```bash
-python3.12 -m venv .venv
-.venv/bin/python -m pip install --upgrade pip
-.venv/bin/python -m pip install -e ".[build]"
-.venv/bin/python scripts/prepare_ffmpeg.py --download
-.venv/bin/python scripts/build_desktop.py
-```
-
-macOS에서는 `dist/YTMusicDownloader.app`을 엽니다.
-Linux에서는 `dist/YTMusicDownloader/` 폴더에서 `./YTMusicDownloader`를 실행합니다.
-`.app`이나 Linux 출력 폴더는 내부 파일을 빼지 말고 전체를 유지하세요.
-Linux의 그래픽 라이브러리 요구 사항과 추가 옵션은 [빌드 문서](docs/development/BUILDING.md)에 있습니다.
-
-### 3. 앱 사용하기
+## 앱 사용하기
 
 1. YouTube 또는 YouTube Music 재생목록 URL을 붙여 넣습니다.
 2. MP3를 저장할 폴더를 선택합니다.
 3. 출력 모드, 동시 작업 수(1~4), 필요하면 브라우저 쿠키를 선택합니다.
 4. 다운로드를 시작하고 목록에서 곡별 진행 상태를 확인합니다.
 5. 실패한 항목은 해당 곡의 재시도 버튼이나 실패 항목 모두 재시도 버튼으로 다시 처리합니다.
-
-사용을 마치면 앱 창을 닫습니다. Windows EXE는 실행 시 내장 구성 요소를 임시 폴더에
-풀기 때문에 시작에 잠시 시간이 걸릴 수 있습니다.
 
 ## 출력 음질
 
@@ -109,8 +80,8 @@ Chrome, Edge, Firefox, Brave 쿠키를 사용할 수 있습니다.
 
 ## 개발자 문서
 
-소스를 수정하거나 테스트하려면 [개발자 문서 세트](docs/development/README.md)를 참고하세요.
-개발 환경, 코드 구조, 패키징, 테스트, 기존 웹 모드와 HTTP API를 별도로 정리했습니다.
+소스 받기, 개발 환경 준비, 코드 구조, 패키징과 테스트는 [개발자 문서 세트](docs/development/README.md)에 있습니다.
+이 절차는 앱을 만드는 개발자를 위한 것이며, 패키징된 앱을 사용하는 사람에게는 필요하지 않습니다.
 
 ## 라이선스
 
