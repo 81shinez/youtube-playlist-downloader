@@ -1,5 +1,8 @@
 # YouTube Music Downloader Local Web UI Design
 
+> 과거 설계 기록: 웹 앱으로 시작하던 시점의 문서이며 현재 데스크톱 앱의 개발 지침이 아닙니다.
+> 현재 구조와 개발 절차는 [개발자 문서](../../development/README.md)를 참고하세요.
+
 ## Goal
 
 Build a local web utility that accepts a YouTube Music playlist URL and saves each authorized track as an MP3 file. The app should prioritize the best available source audio, then encode to MP3 using either a fixed 192kbps setting or a source-aware maximum setting capped at 320kbps.

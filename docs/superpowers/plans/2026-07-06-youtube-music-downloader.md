@@ -1,5 +1,8 @@
 # YouTube Music Downloader Implementation Plan
 
+> 과거 구현 계획: 아래 체크리스트와 작업 지시는 초기 웹 앱 구현 당시의 기록입니다.
+> 현재 미완료 작업이나 개발 절차는 아니며, [개발자 문서](../../development/README.md)를 참고하세요.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a localhost FastAPI web app that accepts a YouTube Music playlist URL and writes authorized tracks as MP3 files using either 192kbps or source-aware maximum bitrate mode.
